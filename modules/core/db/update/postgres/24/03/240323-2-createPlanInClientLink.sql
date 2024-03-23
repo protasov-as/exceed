@@ -1,0 +1,2 @@
+alter table EXCEED_PLAN_IN_CLIENT_LINK add constraint FK_PLAINCLI_ON_CLIENT foreign key (CLIENT_ID) references EXCEED_CLIENT(ID);
+alter table EXCEED_PLAN_IN_CLIENT_LINK add constraint FK_PLAINCLI_ON_PLAN_IN foreign key (PLAN_IN_ID) references EXCEED_PLAN_IN(ID);
