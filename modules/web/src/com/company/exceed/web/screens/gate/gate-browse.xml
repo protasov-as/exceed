@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        xmlns:c="http://schemas.haulmont.com/cuba/screen/jpql_condition.xsd"
+        caption="msg://gateBrowse.caption"
+        focusComponent="gatesTable"
+        messagesPack="com.company.exceed.web.screens.gate">
+    <data readOnly="true">
+        <collection id="gatesDc"
+                    class="com.company.exceed.entity.Gate">
+            <view extends="_local"/>
+            <loader id="gatesDl">
+                <query>
+                    <![CDATA[select e from exceed_Gate e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="gatesTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="gatesTable"
+                dataLoader="gatesDl">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="gatesTable"
+                    width="100%"
+                    dataContainer="gatesDc">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+                <action id="excel" type="excel"/>
+            </actions>
+            <columns>
+                <column id="number"/>
+                <column id="availableFrom"/>
+                <column id="availableTo"/>
+            </columns>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="gatesTable.create"/>
+                <button id="editBtn" action="gatesTable.edit"/>
+                <button id="removeBtn" action="gatesTable.remove"/>
+                <button id="excelBtn" action="gatesTable.excel"/>
+            </buttonsPanel>
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>
