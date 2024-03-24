@@ -33,10 +33,10 @@ create table EXCEED_PLAN_IN (
     VEHICLE_NUMBER varchar(20),
     WEIGHT_CAPACITY integer,
     DRIVER_NAME varchar(100),
-    DRIVER_PHONE varchar(10),
+    DRIVER_PHONE varchar(20),
     STATUS integer,
     STATE integer,
-    GATE integer,
+    GATE varchar(5),
     REG_DATE timestamp,
     AT_GATES_DATE timestamp,
     DEPART_ACCEPTED_DATE timestamp,
@@ -71,3 +71,23 @@ create table EXCEED_PLAN_IN_CLIENT_LINK (
     primary key (CLIENT_ID, PLAN_IN_ID)
 )^
 -- end EXCEED_PLAN_IN_CLIENT_LINK
+-- begin EXCEED_PLANIN_EVENT
+create table EXCEED_PLANIN_EVENT (
+    ID uuid,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    REG_NUMBER varchar(10),
+    VEHICLE_NUMBER varchar(20),
+    STATUS integer,
+    STATE integer,
+    EVENT_DATE timestamp,
+    --
+    primary key (ID)
+)^
+-- end EXCEED_PLANIN_EVENT

@@ -6,5 +6,6 @@
     </menu>
     <menu id="acceptance-exceed" insertBefore="reference-exceed" caption="mainMsg://menu_config.acceptance-exceed">
         <item screen="exceed_PlanIn.browse" caption="mainMsg://menu_config.exceed_PlanIn.browse"/>
+        <item screen="exceed_PlaninEvent.browse" caption="mainMsg://menu_config.exceed_PlaninEvent.browse"/>
     </menu>
 </menu-config>

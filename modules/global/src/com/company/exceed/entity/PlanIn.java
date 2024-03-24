@@ -2,16 +2,16 @@ package com.company.exceed.entity;
 
 import com.haulmont.chile.core.annotations.MetaProperty;
 import com.haulmont.cuba.core.entity.StandardEntity;
+import com.haulmont.cuba.core.entity.annotation.PublishEntityChangedEvents;
 import com.haulmont.cuba.core.global.AppBeans;
 import com.haulmont.cuba.core.global.TimeSource;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+@PublishEntityChangedEvents
 @Table(name = "EXCEED_PLAN_IN")
 @Entity(name = "exceed_PlanIn")
 public class PlanIn extends StandardEntity {
@@ -43,7 +43,7 @@ public class PlanIn extends StandardEntity {
     @Column(name = "DRIVER_NAME", length = 100)
     private String driverName;
 
-    @Column(name = "DRIVER_PHONE", length = 10)
+    @Column(name = "DRIVER_PHONE", length = 20)
     private String driverPhone;
 
     @Column(name = "STATUS")
