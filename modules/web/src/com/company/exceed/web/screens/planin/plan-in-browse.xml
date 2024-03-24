@@ -15,6 +15,16 @@
             <loader id="planInsPlanDl">
                 <query>
                     <![CDATA[select e from exceed_PlanIn e where e.status in (10, 20)]]>
+                    <condition>
+                        <or>
+                            <c:jpql>
+                                <c:where>e.regNumber = :regNumberFilterFieldValue</c:where>
+                            </c:jpql>
+                            <c:jpql>
+                                <c:where>e.vehicleNumber = :vehicleNumberFilterField</c:where>
+                            </c:jpql>
+                        </or>
+                    </condition>
                 </query>
             </loader>
         </collection>
@@ -30,6 +40,16 @@
             <loader id="planInsGateDl">
                 <query>
                     <![CDATA[select e from exceed_PlanIn e where e.status = 30 and e.state = 20]]>
+                    <condition>
+                        <or>
+                            <c:jpql>
+                                <c:where>e.regNumber = :regNumberFilterFieldGatesTab</c:where>
+                            </c:jpql>
+                            <c:jpql>
+                                <c:where>e.vehicleNumber = :vehicleNumberFilterFieldGatesTab</c:where>
+                            </c:jpql>
+                        </or>
+                    </condition>
                 </query>
             </loader>
         </collection>
@@ -49,7 +69,10 @@
                                 dataLoader="planInsPlanDl">
                     <properties include="regNumber|vehicleNumber"/>
                 </filter>
-                <lookupField id="regNumberFilterField"/>
+                <hbox id="lookupFilterBox" spacing="true">
+                    <lookupField id="regNumberFilterField" caption="msg://regNumber"/>
+                    <lookupField id="vehicleNumberFilterField" caption="msg://vehicleNumber"/>
+                </hbox>
                 <table id="planInsTablePlan"
                                width="100%"
                                dataContainer="planInsPlanDc">
@@ -91,6 +114,10 @@
                         dataLoader="planInsGateDl">
                     <properties include="regNumber|vehicleNumber"/>
                 </filter>
+                <hbox id="lookupFilterBoxGatesTab" spacing="true">
+                    <lookupField id="regNumberFilterFieldGatesTab" caption="msg://regNumber"/>
+                    <lookupField id="vehicleNumberFilterFieldGatesTab" caption="msg://vehicleNumber"/>
+                </hbox>
                 <table id="planInsTableGate"
                        width="100%"
                        dataContainer="planInsGateDc">

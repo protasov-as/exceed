@@ -1,6 +1,9 @@
 package com.company.exceed.web.screens.planin;
 
-import com.company.exceed.entity.*;
+import com.company.exceed.entity.Gate;
+import com.company.exceed.entity.PlanIn;
+import com.company.exceed.entity.VehicleState;
+import com.company.exceed.entity.VehicleStatus;
 import com.company.exceed.web.screens.RegistrationFragment;
 import com.company.exceed.web.screens.gate.GateFragment;
 import com.haulmont.cuba.core.global.DataManager;
@@ -9,17 +12,16 @@ import com.haulmont.cuba.core.global.TimeSource;
 import com.haulmont.cuba.gui.Facets;
 import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.Screens;
-import com.haulmont.cuba.gui.components.Button;
-import com.haulmont.cuba.gui.components.TabSheet;
-import com.haulmont.cuba.gui.components.Table;
-import com.haulmont.cuba.gui.components.Timer;
+import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.model.CollectionContainer;
 import com.haulmont.cuba.gui.model.CollectionLoader;
+import com.haulmont.cuba.gui.screen.LookupComponent;
 import com.haulmont.cuba.gui.screen.*;
 import org.apache.commons.collections4.CollectionUtils;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @UiController("exceed_PlanIn.browse")
 @UiDescriptor("plan-in-browse.xml")
@@ -63,6 +65,14 @@ public class PlanInBrowse extends StandardLookup<PlanIn> {
     private Button assignGateBtnPlan;
     @Inject
     private Button regUpBtnPlan;
+    @Inject
+    private LookupField<String> regNumberFilterField;
+    @Inject
+    private LookupField<String> vehicleNumberFilterField;
+    @Inject
+    private LookupField<String> regNumberFilterFieldGatesTab;
+    @Inject
+    private LookupField<String> vehicleNumberFilterFieldGatesTab;
 
     @Subscribe("tabSheet")
     public void onTabSheetSelectedTabChange(TabSheet.SelectedTabChangeEvent event) {
@@ -73,6 +83,46 @@ public class PlanInBrowse extends StandardLookup<PlanIn> {
             planInsGateDl.load();
             setGatesTabCaption();
         }
+    }
+
+    @Subscribe("vehicleNumberFilterField")
+    private void onVehicleNumberFilterFieldValueChange(HasValue.ValueChangeEvent<String> event) {
+        if (event.getValue() != null) {
+            planInsPlanDl.setParameter("vehicleNumberFilterField", event.getValue());
+        } else {
+            planInsPlanDl.removeParameter("vehicleNumberFilterField");
+        }
+        planInsPlanDl.load();
+    }
+
+    @Subscribe("regNumberFilterField")
+    private void onRegNumberFilterFieldValueChange(HasValue.ValueChangeEvent<String> event) {
+        if (event.getValue() != null) {
+            planInsPlanDl.setParameter("regNumberFilterFieldValue", event.getValue());
+        } else {
+            planInsPlanDl.removeParameter("regNumberFilterFieldValue");
+        }
+        planInsPlanDl.load();
+    }
+
+    @Subscribe("vehicleNumberFilterFieldGatesTab")
+    private void onVehicleNumberFilterFieldGatesTabValueChange(HasValue.ValueChangeEvent<String> event) {
+        if (event.getValue() != null) {
+            planInsGateDl.setParameter("vehicleNumberFilterFieldGatesTab", event.getValue());
+        } else {
+            planInsGateDl.removeParameter("vehicleNumberFilterFieldGatesTab");
+        }
+        planInsGateDl.load();
+    }
+
+    @Subscribe("regNumberFilterFieldGatesTab")
+    private void onRegNumberFilterFieldGatesTabValueChange(HasValue.ValueChangeEvent<String> event) {
+        if (event.getValue() != null) {
+            planInsGateDl.setParameter("regNumberFilterFieldGatesTab", event.getValue());
+        } else {
+            planInsGateDl.removeParameter("regNumberFilterFieldGatesTab");
+        }
+        planInsGateDl.load();
     }
 
     @Subscribe
@@ -134,13 +184,36 @@ public class PlanInBrowse extends StandardLookup<PlanIn> {
         refreshTimer.start();
     }
 
+    protected void refreshRegNumberFilterFieldOptions() {
+        List<String> regNumbers = planInsPlanDc.getItems().stream().map(PlanIn::getRegNumber).collect(Collectors.toList());
+        regNumberFilterField.setOptionsList(regNumbers);
+    }
+
+    protected void refreshVehicleNumberFilterFieldOptions() {
+        List<String> vehicleNumbers = planInsPlanDc.getItems().stream().map(PlanIn::getVehicleNumber).collect(Collectors.toList());
+        vehicleNumberFilterField.setOptionsList(vehicleNumbers);
+    }
+    protected void refreshRegNumberFilterFieldOptionsGatesTab() {
+        List<String> regNumbers = planInsGateDc.getItems().stream().map(PlanIn::getRegNumber).collect(Collectors.toList());
+        regNumberFilterFieldGatesTab.setOptionsList(regNumbers);
+    }
+
+    protected void refreshVehicleNumberFilterFieldOptionsGatesTab() {
+        List<String> vehicleNumbers = planInsGateDc.getItems().stream().map(PlanIn::getVehicleNumber).collect(Collectors.toList());
+        vehicleNumberFilterFieldGatesTab.setOptionsList(vehicleNumbers);
+    }
+
     @Subscribe
     public void onBeforeShow(BeforeShowEvent event) {
         planInsPlanDl.load();
         setPlannedTabCaption();
+        refreshRegNumberFilterFieldOptions();
+        refreshVehicleNumberFilterFieldOptions();
 
         planInsGateDl.load();
         setGatesTabCaption();
+        refreshRegNumberFilterFieldOptionsGatesTab();
+        refreshVehicleNumberFilterFieldOptionsGatesTab();
     }
 
     protected void setPlannedTabCaption() {
