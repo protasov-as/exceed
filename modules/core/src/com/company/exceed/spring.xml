@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:context="http://www.springframework.org/schema/context">
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd">
 
     <!-- Annotation-based beans -->
     <context:component-scan base-package="com.company.exceed"/>
+
+    <bean id="exceed_RegisterVehicleDepartureBean" class="com.company.exceed.core.RegisterVehicleDepartureBean"/>
+
+    <task:scheduled-tasks scheduler="scheduler">
+        <task:scheduled ref="exceed_RegisterVehicleDepartureBean" method="registerVehicleDeparture" cron="0 * 10-18 * * *"/>
+    </task:scheduled-tasks>
 
 </beans>
