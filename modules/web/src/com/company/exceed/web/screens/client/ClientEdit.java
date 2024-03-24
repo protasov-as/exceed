@@ -31,8 +31,9 @@ public class ClientEdit extends StandardEditor<Client> {
 
     protected Optional<Client> loadClientByCode() {
         return dataManager.load(Client.class)
-                .query("select c from exceed_Client c where c.code = :code")
+                .query("select c from exceed_Client c where c.code = :code and c.id <> :id")
                 .parameter("code", getEditedEntity().getCode())
+                .parameter("id", getEditedEntity().getId())
                 .optional();
     }
 }

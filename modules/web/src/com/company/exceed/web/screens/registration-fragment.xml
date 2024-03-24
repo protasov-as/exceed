@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fragment xmlns="http://schemas.haulmont.com/cuba/screen/fragment.xsd" caption="msg://registrationCaption">
+    <layout spacing="true">
+        <textField id="vehicleNumber" caption="msg://vehicleNumber" required="true"/>
+        <textField id="driverName" caption="msg://driverName" required="true"/>
+        <textField id="driverPhone" caption="msg://driverPhone" required="true"/>
+        <lookupField id="weightCapacity" caption="msg://weightCapacity" required="true"/>
+        <buttonsPanel>
+            <button id="okBtn" icon="icons/ok.png"/>
+            <button id="cancelBtn" icon="icons/cancel.png"/>
+        </buttonsPanel>
+    </layout>
+</fragment>

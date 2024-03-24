@@ -31,8 +31,9 @@ public class GateEdit extends StandardEditor<Gate> {
 
     protected Optional<Gate> loadGateByNumber() {
         return dataManager.load(Gate.class)
-                .query("select g from exceed_Gate g where g.number = :number")
+                .query("select g from exceed_Gate g where g.number = :number and g.id <> :id")
                 .parameter("number", getEditedEntity().getNumber())
+                .parameter("id", getEditedEntity().getId())
                 .optional();
     }
 }

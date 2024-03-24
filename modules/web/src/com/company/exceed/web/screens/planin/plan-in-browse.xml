@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        xmlns:c="http://schemas.haulmont.com/cuba/screen/jpql_condition.xsd"
+        caption="msg://planInBrowse.caption"
+        focusComponent="planInsTablePlan"
+        messagesPack="com.company.exceed.web.screens.planin">
+    <data readOnly="false">
+        <collection id="planInsPlanDc"
+                    class="com.company.exceed.entity.PlanIn">
+            <view extends="_local">
+                <property name="contractor" view="_minimal">
+                    <property name="name"/>
+                </property>
+            </view>
+            <loader id="planInsPlanDl">
+                <query>
+                    <![CDATA[select e from exceed_PlanIn e where e.status in (10, 20)]]>
+                </query>
+            </loader>
+        </collection>
+        <collection id="planInsGateDc"
+                    class="com.company.exceed.entity.PlanIn">
+            <view extends="_local">
+                <property name="contractor" view="_minimal">
+                    <property name="code"/>
+                    <property name="address"/>
+                    <property name="contact"/>
+                </property>
+            </view>
+            <loader id="planInsGateDl">
+                <query>
+                    <![CDATA[select e from exceed_PlanIn e where e.status = 30 and e.state = 20]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+
+    <dialogMode height="600"
+                width="800"/>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <layout expand="tabSheet"
+            spacing="true">
+        <tabSheet id="tabSheet">
+            <tab id="planTab" caption="msg://plannedTab" expand="planInsTablePlan" spacing="true">
+                <filter id="filter"
+                                applyTo="planInsTablePlan"
+                                dataLoader="planInsPlanDl">
+                    <properties include="regNumber|vehicleNumber"/>
+                </filter>
+                <lookupField id="regNumberFilterField"/>
+                <table id="planInsTablePlan"
+                               width="100%"
+                               dataContainer="planInsPlanDc">
+                    <actions>
+                        <action id="create" type="create"/>
+                        <action id="edit" type="edit"/>
+                        <action id="remove" type="remove"/>
+                    </actions>
+                    <columns>
+                        <column id="regNumber"/>
+                        <column id="orderNumber"/>
+                        <column id="arrivalPlanTime"/>
+                        <column id="vehicleNumber"/>
+                        <column id="weightCapacity"/>
+                        <column id="driverName"/>
+                        <column id="driverPhone"/>
+                        <column id="status"/>
+                        <column id="state"/>
+                        <column id="contractor"/>
+                    </columns>
+                    <rowsCount/>
+                    <buttonsPanel id="buttonsPanel"
+                                  alwaysVisible="true">
+                        <button id="createBtnPlan" action="planInsTablePlan.create"/>
+                        <button id="editBtnPlan" action="planInsTablePlan.edit"/>
+                        <button id="removeBtnPlan" action="planInsTablePlan.remove"/>
+                        <button id="regUpBtnPlan" invoke="regUp"
+                                caption="msg://regUp" stylename="primary"
+                                enable="false"/>
+                        <button id="assignGateBtnPlan" invoke="assignGate"
+                                caption="msg://assignGate" stylename="primary"
+                                enable="false"/>
+                    </buttonsPanel>
+                </table>
+            </tab>
+            <tab id="gatesTab" caption="msg://gatesTab" expand="planInsTableGate" spacing="true">
+                <filter id="filterGates"
+                        applyTo="planInsTableGate"
+                        dataLoader="planInsGateDl">
+                    <properties include="regNumber|vehicleNumber"/>
+                </filter>
+                <table id="planInsTableGate"
+                       width="100%"
+                       dataContainer="planInsGateDc">
+                    <actions>
+                        <action id="create" type="create"/>
+                        <action id="edit" type="edit"/>
+                        <action id="remove" type="remove"/>
+                    </actions>
+                    <columns>
+                        <column id="timeOnGates"/>
+                        <column id="gate"/>
+                        <column id="regNumber"/>
+                        <column id="orderNumber"/>
+                        <column id="contractor"/>
+                        <column id="arrivalPlanTime"/>
+                        <column id="vehicleNumber"/>
+                        <column id="weightCapacity"/>
+                        <column id="driverName"/>
+                        <column id="driverPhone"/>
+                        <column id="status"/>
+                        <column id="state"/>
+                    </columns>
+                    <rowsCount/>
+                    <buttonsPanel id="buttonsPanelGates"
+                                  alwaysVisible="true">
+                        <button id="createBtnGates" action="planInsTableGate.create"/>
+                        <button id="editBtnGates" action="planInsTableGate.edit"/>
+                        <button id="removeBtnGates" action="planInsTableGate.remove"/>
+                        <button id="loadedUpBtnGates" invoke="loadedUp"
+                                caption="msg://loadedUp" stylename="friendly"
+                                enable="false"/>
+                    </buttonsPanel>
+                </table>
+            </tab>
+        </tabSheet>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>

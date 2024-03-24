@@ -8,7 +8,7 @@ create table EXCEED_GATE (
     DELETE_TS timestamp,
     DELETED_BY varchar(50),
     --
-    NUMBER_ integer not null,
+    NUMBER_ varchar(5) not null,
     AVAILABLE_FROM time not null,
     AVAILABLE_TO time not null,
     --

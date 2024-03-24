@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://planInEdit.caption"
+        focusComponent="form"
+        messagesPack="com.company.exceed.web.screens.planin">
+    <data>
+        <instance id="planInDc"
+                  class="com.company.exceed.entity.PlanIn">
+            <view extends="_local">
+                <property name="contractor" view="_minimal">
+                    <property name="code"/>
+                    <property name="address"/>
+                    <property name="contact"/>
+                </property>
+            </view>
+            <loader/>
+            <collection id="contractorDc" property="contractor"/>
+        </instance>
+    </data>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="scrollBox" spacing="true">
+        <scrollBox id="scrollBox" spacing="true">
+            <form id="form" dataContainer="planInDc">
+                <column width="350px">
+                    <textField id="regNumberField" property="regNumber"/>
+                    <textField id="orderNumberField" property="orderNumber"/>
+                    <dateField id="arrivalPlanTimeField" property="arrivalPlanTime"/>
+                    <textField id="vehicleNumberField" property="vehicleNumber"/>
+                    <lookupField id="weightCapacityField" property="weightCapacity"/>
+                    <textField id="driverNameField" property="driverName"/>
+                    <textField id="driverPhoneField" property="driverPhone"/>
+                    <lookupField id="statusField" property="status"/>
+                    <lookupField id="stateField" property="state"/>
+                    <textField id="gateField" property="gate"/>
+                    <dateField id="regDateField" property="regDate"/>
+                    <dateField id="atGatesDateField" property="atGatesDate"/>
+                    <dateField id="departAcceptedDateField" property="departAcceptedDate"/>
+                    <dateField id="departDateField" property="departDate"/>
+                </column>
+            </form>
+            <groupBox id="contractorBox" caption="msg://com.company.exceed.entity/PlanIn.contractor">
+                <table id="contractorTable" dataContainer="contractorDc" width="100%" height="200px">
+                    <actions>
+                        <action id="add" type="add"/>
+                        <action id="exclude" type="exclude"/>
+                    </actions>
+                    <columns>
+                        <column id="name"/>
+                        <column id="code"/>
+                        <column id="address"/>
+                        <column id="contact"/>
+                    </columns>
+                    <buttonsPanel>
+                        <button action="contractorTable.add"/>
+                        <button action="contractorTable.exclude"/>
+                    </buttonsPanel>
+                </table>
+            </groupBox>
+        </scrollBox>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>

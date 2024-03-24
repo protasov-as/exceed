@@ -1,11 +1,14 @@
 package com.company.exceed.entity;
 
-import com.haulmont.chile.core.annotations.NumberFormat;
+import com.haulmont.chile.core.annotations.MetaProperty;
 import com.haulmont.cuba.core.entity.StandardEntity;
+import com.haulmont.cuba.core.global.AppBeans;
+import com.haulmont.cuba.core.global.TimeSource;
 
 import javax.persistence.*;
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -49,10 +52,8 @@ public class PlanIn extends StandardEntity {
     @Column(name = "STATE")
     private Integer state;
 
-    @NumberFormat(pattern = "10")
-    @Column(name = "GATE")
-    @Digits(integer = 10, fraction = 0)
-    private Integer gate;
+    @Column(name = "GATE", length = 5)
+    private String gate;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "REG_DATE")
@@ -69,6 +70,18 @@ public class PlanIn extends StandardEntity {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "DEPART_DATE")
     private Date departDate;
+
+    @MetaProperty
+    @Transient
+    private String timeOnGates;
+
+    public void setGate(String gate) {
+        this.gate = gate;
+    }
+
+    public String getGate() {
+        return gate;
+    }
 
     public List<Client> getContractor() {
         return contractor;
@@ -108,14 +121,6 @@ public class PlanIn extends StandardEntity {
 
     public void setRegDate(Date regDate) {
         this.regDate = regDate;
-    }
-
-    public Integer getGate() {
-        return gate;
-    }
-
-    public void setGate(Integer gate) {
-        this.gate = gate;
     }
 
     public VehicleState getState() {
@@ -190,4 +195,24 @@ public class PlanIn extends StandardEntity {
         return regNumber;
     }
 
+    public String getTimeOnGates() {
+        if (atGatesDate != null) {
+            TimeSource timeSource = AppBeans.get(TimeSource.class);
+            long differenceInMilliSeconds
+                    = Math.abs(timeSource.currentTimestamp().getTime() - atGatesDate.getTime());
+            long differenceInHours
+                    = (differenceInMilliSeconds / (60 * 60 * 1000))
+                    % 24;
+            long differenceInMinutes
+                    = (differenceInMilliSeconds / (60 * 1000)) % 60;
+            long differenceInSeconds
+                    = (differenceInMilliSeconds / 1000) % 60;
+            return differenceInHours + " ч. " + differenceInMinutes + " мин. " + differenceInSeconds + " сек.";
+        }
+        return "";
+    }
+
+    public void setTimeOnGates(String timeOnGates) {
+        this.timeOnGates = timeOnGates;
+    }
 }
